@@ -1,0 +1,83 @@
+diff --git a/makefile b/makefile
+index 4a3f8f25..5e23da41 100644
+--- a/makefile
++++ b/makefile
+@@ -15,10 +15,10 @@
+ # Windows compatibility, jonas-kr, Sep '20.
+ 
+ # Compiler (CXX), and linking from C, fortran. We use GCC by default...
+-CXX = g++
+-CC = gcc
+-FC = gfortran
+-CLINK = -lstdc++
++CXX ?= g++
++CC ?= gcc
++FC ?= gfortran
++CLINK =
+ FLINK = $(CLINK)
+ # Python version: we use python3 by default, but you may need to change...
+ PYTHON = python3
+@@ -26,19 +26,16 @@ PYTHON = python3
+ # Notes: 1) -Ofast breaks isfinite() & isnan(), so use -O3 which now is as fast
+ #        2) -fcx-limited-range for fortran-speed complex arith in C++
+ #        3) we use simply-expanded (:=) makefile variables, otherwise confusing
+-CFLAGS := -O3 -funroll-loops -march=native -fcx-limited-range $(CFLAGS)
+-FFLAGS := $(CFLAGS) $(FFLAGS)
+-CXXFLAGS := $(CFLAGS) $(CXXFLAGS)
++CFLAGS ?= -O3 -funroll-loops -fcx-limited-range
++FFLAGS ?= $(CFLAGS)
++CXXFLAGS ?= $(CFLAGS)
+ # put this in your make.inc if you have FFTW>=3.3.5 and want thread-safe use...
+ #CXXFLAGS += -DFFTW_PLAN_SAFE
+ # FFTW base name, and math linking...
+-FFTWNAME = fftw3
+ # linux default is fftw3_omp, since 10% faster than fftw3_threads...
+-FFTWOMPSUFFIX = omp
+ LIBS := -lm
+ # multithreading for GCC: C++/C/Fortran, MATLAB, and octave (ICC differs)...
+ OMPFLAGS = -fopenmp
+-OMPLIBS = -lgomp
+ MOMPFLAGS = -D_OPENMP
+ OOMPFLAGS =
+ # MATLAB MEX compilation (also see below +=)...
+@@ -56,20 +53,20 @@ FINUFFT = $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
+ 
+ # For your OS, override the above by setting make variables in make.inc ...
+ # (Please look in make.inc.* for ideas)
+--include make.inc
++include make.inc
+ 
+ # Now come flags that should be added, whatever user overrode in make.inc.
+ # -fPIC (position-indep code) needed to build dyn lib (.so)
+ # Also, we force return (via :=) to the land of simply-expanded variables...
+-INCL = -Iinclude
++INCL := -Iinclude $(INCL)
+ CXXFLAGS := $(CXXFLAGS) $(INCL) -fPIC -std=c++14
+ CFLAGS := $(CFLAGS) $(INCL) -fPIC
+ # here /usr/include needed for fftw3.f "fortran header"... (JiriK: no longer)
+-FFLAGS := $(FFLAGS) $(INCL) -I/usr/include -fPIC
++FFLAGS := $(FFLAGS) $(INCL) -fPIC
+ 
+ # single-thread total list of math and FFTW libs (now both precisions)...
+ # (Note: finufft tests use LIBSFFT; spread & util tests only need LIBS)
+-LIBSFFT := -l$(FFTWNAME) -l$(FFTWNAME)f $(LIBS)
++LIBSFFT := $(LIBS)
+ 
+ # multi-threaded libs & flags, and req'd flags (OO for new interface)...
+ ifneq ($(OMP),OFF)
+@@ -78,13 +75,8 @@ ifneq ($(OMP),OFF)
+   FFLAGS += $(OMPFLAGS)
+   MFLAGS += $(MOMPFLAGS) -DR2008OO
+   OFLAGS += $(OOMPFLAGS) -DR2008OO
+-  LIBS += $(OMPLIBS)
+-  ifneq ($(MINGW),ON)
+-    ifneq ($(MSYS),ON)
+-# omp override for total list of math and FFTW libs (now both precisions)...
+-      LIBSFFT := -l$(FFTWNAME) -l$(FFTWNAME)_$(FFTWOMPSUFFIX) -l$(FFTWNAME)f -l$(FFTWNAME)f_$(FFTWOMPSUFFIX) $(LIBS)
+-    endif
+-  endif
++  LIBS += $(OMPFLAGS)
++  LIBSFFT := $(LIBS)
+ endif
+ 
+ # name & location of library we're building...
