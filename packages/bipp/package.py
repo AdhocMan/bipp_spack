@@ -40,7 +40,7 @@ class Bipp(CMakePackage, CudaPackage):
         depends_on("py-matplotlib")
         depends_on("py-tqdm")
         depends_on("py-pyproj")
-        depends_on("py-healpy")
+        depends_on("py-healpy@1.16:")
         depends_on("py-scikit-learn")
         depends_on("py-pandas")
         depends_on("py-scipy")
