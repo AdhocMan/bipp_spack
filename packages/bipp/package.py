@@ -16,7 +16,7 @@ class Bipp(CMakePackage, CudaPackage):
     depends_on("blas")
     depends_on("lapack")
     depends_on("finufft@2.1.0")
-    depends_on("spdlog")
+    depends_on("spdlog@1.11.0")
     depends_on("mpi", when="+mpi")
 
     depends_on("openblas threads=openmp", when="+openmp ^[virtuals=blas] openblas")
