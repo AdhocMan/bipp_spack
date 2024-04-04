@@ -17,7 +17,6 @@ class Bipp(CMakePackage, CudaPackage):
     depends_on("lapack")
     depends_on("finufft@2.1.0")
     depends_on("spdlog")
-    depends_on("cufinufft", when="+cuda")
     depends_on("mpi", when="+mpi")
 
     depends_on("openblas threads=openmp", when="+openmp ^[virtuals=blas] openblas")
@@ -25,6 +24,12 @@ class Bipp(CMakePackage, CudaPackage):
     depends_on("amdblis threads=openmp", when="+openmp ^[virtuals=blas] amdblis")
 
     extends("python", when="+python")
+
+    with when("+cuda"):
+        depends_on("cufinufft+cuda")
+        # propagate cuda arch requirement
+        for val in CudaPackage.cuda_arch_values:
+            depends_on(f"cufinufft+cuda cuda_arch={val}", when=f"cuda_arch={val}")
 
     with when("+python"):
         depends_on("python@3.8:")
