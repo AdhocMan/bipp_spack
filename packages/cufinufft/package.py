@@ -26,6 +26,7 @@ class Cufinufft(MakefilePackage, CudaPackage):
 
         common_flags = "-O3 -fPIC"
 
+        env.set("CUDA_ROOT", self.spec["cuda"].prefix)
         env.set("NVARCH", cuda_arch_flags)
         env.set("CFLAGS", common_flags)
         env.set("CXXFLAGS", "-std=c++14 {}".format(common_flags))
