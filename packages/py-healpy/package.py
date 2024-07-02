@@ -35,9 +35,9 @@ class PyHealpy(PythonPackage):
     depends_on("py-astropy", type=("build", "run"))
     depends_on("py-matplotlib", type=("build", "run"))
     depends_on("py-six", type=("build", "run"))
-    depends_on("cfitsio@4:", when="@1.16:", type=("build", "run"))
-    depends_on("cfitsio@3:", when="@:1.15", type=("build", "run"))
-    depends_on("healpix-cxx", type=("build", "run"))
+    depends_on("cfitsio@4:", when="@1.16:")
+    depends_on("cfitsio@3:", when="@:1.15")
+    depends_on("healpix-cxx")
     depends_on("libsharp ~mpi") # healpy-cxx dependency that defaults to mpi
     depends_on("py-cython@0.29.13:", type="build")
     depends_on("pkg-config", type="build")

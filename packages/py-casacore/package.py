@@ -21,7 +21,7 @@ class PyCasacore(PythonPackage):
 
     depends_on("py-setuptools", type="build")
     depends_on("boost+python", type=("build"))
-    depends_on("casacore+python", type=("build", "run"))
+    depends_on("casacore+python")
     depends_on("wcslib")
     depends_on("cfitsio")
 
