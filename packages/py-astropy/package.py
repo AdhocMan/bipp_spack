@@ -19,7 +19,7 @@ class PyAstropy(PythonPackage):
 
     license("BSD-3-Clause")
 
-    version("6.0.0", sha256="03cd801a55305da523cd8d780d76359f57255dcdc59fe0bdd71fd5154fc777d9")
+    version("6.0.0", sha256="03cd801a55305da523cd8d780d76359f57255dcdc59fe0bdd71fd5154fc777d9", preferred=True)
     version("5.3.4", sha256="d490f7e2faac2ccc01c9244202d629154259af8a979104ced89dc4ace4e6f1d8")
     version("5.1", sha256="1db1b2c7eddfc773ca66fa33bd07b25d5b9c3b5eee2b934e0ca277fa5b1b7b7e")
     version(
@@ -49,7 +49,7 @@ class PyAstropy(PythonPackage):
     depends_on("py-numpy", type=("build", "run"))
     depends_on("py-packaging@19.0:", when="@5.1:", type=("build", "run"))
     depends_on("py-pyyaml@3.13:", when="@5.1:", type=("build", "run"))
-    depends_on("py-pyerfa@2.0:", when="@5.1:", type=("build", "run"))
+    depends_on("py-pyerfa@=2.0.1.4", when="@5.1:", type=("build", "run"))
     depends_on("py-setuptools-scm@6.2:", when="@5.1:", type="build")
     depends_on("py-cython@0.29.30", when="@5.1", type="build")
     depends_on("py-cython@3.0.0", when="@5.3:", type="build")

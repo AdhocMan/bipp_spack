@@ -16,7 +16,7 @@ class Bipp(CMakePackage, CudaPackage):
     depends_on("blas")
     depends_on("lapack")
     depends_on("finufft@2.1.0")
-    depends_on("spdlog@1.11.0")
+    depends_on("spdlog@1.13.0")
     depends_on("mpi", when="+mpi")
 
     depends_on("openblas threads=openmp", when="+openmp ^[virtuals=blas] openblas")
@@ -34,8 +34,8 @@ class Bipp(CMakePackage, CudaPackage):
     with when("+python"):
         depends_on("python@3.8:")
         depends_on("py-pybind11", type="build")
-        depends_on("py-numpy")
-        depends_on("py-astropy")
+        depends_on("py-numpy@1.20:1.99")
+        depends_on("py-astropy@5.3:")
         depends_on("py-casacore")
         depends_on("py-matplotlib")
         depends_on("py-tqdm")
